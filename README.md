@@ -7,7 +7,7 @@ containerised with Docker, shipped through a GitHub Actions CI/CD pipeline to Gi
 Registry and a live [Render](https://render.com) deployment, with Kubernetes manifests for a local
 k3d cluster.
 
-**Live demo:** `https://REPLACE-WITH-RENDER-URL.onrender.com/health` <!-- update after Render setup -->
+**Live demo:** not deployed yet; run it locally with Docker Compose (below).
 **API docs:** `/docs` (Swagger UI)
 
 ## Architecture
@@ -99,3 +99,7 @@ The Deployment runs 2 replicas as non-root with resource limits and liveness/rea
 
 - [payments-monitoring-lab](https://github.com/emmanuelrukevwe123-lgtm/payments-monitoring-lab) — Prometheus/Grafana/Alertmanager stack monitoring this API, with runbooks and a post-mortem.
 - [ops-toolkit](https://github.com/emmanuelrukevwe123-lgtm/ops-toolkit) — automation scripts (health checks with Telegram alerts, backups, Docker cleanup) servicing this deployment.
+
+## License
+
+[MIT](./LICENSE) © 2026 Emmanuel Nwabuokei
