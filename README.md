@@ -4,7 +4,7 @@
 
 A mock **B2B invoice/payments REST API** built as a DevOps portfolio project: FastAPI service,
 containerised with Docker, shipped through a GitHub Actions CI/CD pipeline to GitHub Container
-Registry and a live [Render](https://render.com) deployment, with Kubernetes manifests for a local
+Registry and a [Render](https://render.com) deploy hook, with Kubernetes manifests for a local
 k3d cluster.
 
 **Live demo:** not deployed yet; run it locally with Docker Compose (below).
