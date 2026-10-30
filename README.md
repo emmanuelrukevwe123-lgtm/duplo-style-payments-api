@@ -79,7 +79,7 @@ Tests and lint:
 ## CI/CD pipeline
 
 On every PR: **ruff → pytest**. On push to `main`, additionally:
-**build image → push to `ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api` (`latest` + git SHA) → curl the Render deploy hook with that exact SHA image → smoke test `/health` until it reports the new SHA** (the hook is stored as a secret in the GitHub Environment `staging`).
+**build image → scan with Trivy → push to `ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api` (`latest` + git SHA) → curl the Render deploy hook with that exact SHA image → smoke test `/health` until it reports the new SHA** (the hook is stored as a secret in the GitHub Environment `staging`).
 
 ## Kubernetes (local k3d)
 

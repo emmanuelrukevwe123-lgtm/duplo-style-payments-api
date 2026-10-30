@@ -45,7 +45,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
+      - name: Build image for scanning
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ${{ env.IMAGE }}:scan
+          build-args: |
+            APP_VERSION=${{ github.sha }}
+      # Pinned to a commit because a tag can be moved. v0.36.0.
+      - name: Fail on fixable high or critical vulnerabilities
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
+        with:
+          image-ref: ${{ env.IMAGE }}:scan
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: Push scanned image
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
