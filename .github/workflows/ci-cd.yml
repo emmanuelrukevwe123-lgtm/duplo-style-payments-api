@@ -52,6 +52,8 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
+          build-args: |
+            APP_VERSION=${{ github.sha }}
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -63,3 +65,17 @@ jobs:
         run: curl -fsS "$RENDER_DEPLOY_HOOK" > /dev/null
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      - name: Smoke test the new version
+        env:
+          URL: ${{ vars.RENDER_URL }}
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "$URL/health" | grep -q "$GITHUB_SHA"; then
+              echo "Version $GITHUB_SHA is live"
+              exit 0
+            fi
+            echo "Waiting for deploy, attempt $i"
+            sleep 10
+          done
+          echo "New version did not go live within 5 minutes"
+          exit 1
