@@ -62,7 +62,8 @@ jobs:
     environment: staging
     steps:
       - name: Trigger Render deploy
-        run: curl -fsS "$RENDER_DEPLOY_HOOK" > /dev/null
+        # Deploy the exact image this run built; print Render's reply so the log shows the deploy ID.
+        run: curl -fsS -G "$RENDER_DEPLOY_HOOK" --data-urlencode "imgURL=$IMAGE:$GITHUB_SHA"
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
       - name: Smoke test the new version
