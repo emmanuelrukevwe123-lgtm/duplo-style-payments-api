@@ -8,7 +8,7 @@ RUN python -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir -r requ
 # --- final stage: minimal runtime image, non-root ---
 FROM python:3.12-slim
 
-RUN useradd --create-home --shell /usr/sbin/nologin appuser \
+RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin appuser \
     && apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,7 +19,12 @@ WORKDIR /srv
 COPY app/ app/
 COPY frontend/ frontend/
 
-USER appuser
+# Declared late because a new value rebuilds every layer after it, and CI passes the git SHA.
+ARG APP_VERSION=dev
+ENV APP_VERSION=$APP_VERSION
+
+# Numeric so Kubernetes can verify runAsNonRoot.
+USER 10001
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
