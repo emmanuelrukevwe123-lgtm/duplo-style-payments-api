@@ -123,11 +123,6 @@ port is in a reserved range (`ports are not available`).
 - **The k3d Deployment is pinned by hand.** Its SHA tag is updated manually, not by the pipeline.
 - **Free tier cold starts.** The Render service sleeps when idle, so the first request can be slow.
 
-## Related projects
-
-- [payments-monitoring-lab](https://github.com/emmanuelrukevwe123-lgtm/payments-monitoring-lab) — Prometheus/Grafana/Alertmanager stack monitoring this API, with runbooks and a post-mortem.
-- [ops-toolkit](https://github.com/emmanuelrukevwe123-lgtm/ops-toolkit) — automation scripts (health checks with Telegram alerts, backups, Docker cleanup) servicing this deployment.
-
 ## License
 
 [MIT](./LICENSE) © 2026 Emmanuel Nwabuokei
