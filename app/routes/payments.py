@@ -1,8 +1,12 @@
+import logging
+
 from fastapi import APIRouter, HTTPException
 
 from app.metrics import invoices_paid_total
 from app.models import Transaction
 from app.store import AlreadyPaidError, NotFoundError, store
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["payments"])
 
@@ -16,6 +20,7 @@ def pay_invoice(invoice_id: str) -> Transaction:
     except AlreadyPaidError:
         raise HTTPException(status_code=409, detail="Invoice already paid") from None
     invoices_paid_total.inc()
+    logger.info("invoice paid invoice_id=%s amount_ngn=%s", invoice_id, transaction.amount_ngn)
     return transaction
 
 

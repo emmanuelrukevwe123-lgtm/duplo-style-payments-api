@@ -1,3 +1,6 @@
+import logging
+
+
 def test_pay_invoice(client, invoice):
     resp = client.post(f"/invoices/{invoice['id']}/pay")
     assert resp.status_code == 200
@@ -38,3 +41,9 @@ def test_metrics_exposes_business_counter(client, invoice):
     resp = client.get("/metrics")
     assert resp.status_code == 200
     assert "invoices_paid_total" in resp.text
+
+
+def test_payment_is_logged(client, invoice, caplog):
+    with caplog.at_level(logging.INFO, logger="app.routes.payments"):
+        client.post(f"/invoices/{invoice['id']}/pay")
+    assert f"invoice paid invoice_id={invoice['id']}" in caplog.text

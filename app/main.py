@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -11,6 +12,10 @@ from app.routes import invoices, payments
 
 def create_app() -> FastAPI:
     settings = get_settings()
+    logging.basicConfig(
+        level=settings.log_level.upper(),
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
     app = FastAPI(
         title="Duplo-style Payments API",
         description="Mock B2B invoice/payments service built as a DevOps portfolio project.",
