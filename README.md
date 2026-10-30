@@ -4,10 +4,10 @@
 
 A mock **B2B invoice/payments REST API** built as a DevOps portfolio project: FastAPI service,
 containerised with Docker, shipped through a GitHub Actions CI/CD pipeline to GitHub Container
-Registry and a [Render](https://render.com) deploy hook, with Kubernetes manifests for a local
+Registry and a live [Render](https://render.com) deployment, with Kubernetes manifests for a local
 k3d cluster.
 
-**Live demo:** not deployed yet; run it locally with Docker Compose (below).
+**Live demo:** [dashboard](https://duplo-style-payments-api.onrender.com/app/) · [health](https://duplo-style-payments-api.onrender.com/health) (free tier: the first request after idling can take about a minute)
 **API docs:** `/docs` (Swagger UI)
 
 ## Architecture
@@ -45,8 +45,9 @@ All config comes from environment variables (never hardcoded):
 |---|---|---|---|---|
 | `APP_ENV` | Environment name reported by `/health` | `.env` | Render dashboard | ConfigMap |
 | `LOG_LEVEL` | Logging verbosity | `.env` | Render dashboard | ConfigMap |
-| `APP_VERSION` | Version reported by `/health` | `.env` | Render dashboard | Secret (demo) |
+| `APP_VERSION` | Version reported by `/health` | `.env` | Built into image (git SHA) | Secret (demo) |
 | `RENDER_DEPLOY_HOOK` | Pipeline → Render trigger | — | GitHub Environment `staging` secret | — |
+| `RENDER_URL` | Service URL checked by the smoke test | — | GitHub Environment `staging` variable | — |
 
 `.env.example` documents every variable; copy it to `.env` for local use (`.env` is gitignored).
 
@@ -78,7 +79,7 @@ Tests and lint:
 ## CI/CD pipeline
 
 On every PR: **ruff → pytest**. On push to `main`, additionally:
-**build image → push to `ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api` (`latest` + git SHA) → curl the Render deploy hook** (stored as a secret in the GitHub Environment `staging`).
+**build image → push to `ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api` (`latest` + git SHA) → curl the Render deploy hook → smoke test `/health` until it reports the new SHA** (the hook is stored as a secret in the GitHub Environment `staging`).
 
 ## Kubernetes (local k3d)
 
