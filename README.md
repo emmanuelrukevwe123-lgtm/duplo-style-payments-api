@@ -17,9 +17,10 @@ flowchart LR
     dev[Local dev\ndocker compose] -->|git push| gh[GitHub]
     gh --> a1[Lint: ruff]
     a1 --> a2[Test: pytest]
-    a2 --> a3[Build & push image\nGHCR]
-    a3 --> a4[Deploy hook]
+    a2 --> a3[Build, scan & push image\nTrivy + GHCR]
+    a3 --> a4[Deploy hook\nexact SHA]
     a4 --> render[Render\nstaging - live URL]
+    render --> a5[Smoke test\n/health reports SHA]
     a3 -.->|image pulled by| k3d[Local k3d cluster\n2 replicas + probes]
 ```
 
@@ -84,7 +85,7 @@ On every PR: **ruff → pytest**. On push to `main`, additionally:
 ## Kubernetes (local k3d)
 
 ```bash
-k3d cluster create payments
+k3d cluster create payments --api-port 6550
 kubectl create secret generic payments-api-secrets --from-literal=APP_VERSION=k3d-manual
 kubectl apply -f k8s/
 kubectl get pods                                  # expect 2/2 Running
@@ -92,13 +93,35 @@ kubectl port-forward svc/payments-api 8080:80
 curl localhost:8080/health
 ```
 
-The Deployment runs 2 replicas as non-root with resource limits and liveness/readiness probes on
-`/health` — delete a pod and watch Kubernetes replace it.
+The Deployment runs 2 replicas as non-root with resource limits and startup, liveness and readiness
+probes on `/health`. Delete a pod and watch Kubernetes replace it.
 
-<!-- Screenshots: add after first green pipeline + k3d deploy
+The Secret is created by hand because it must not live in Git. `examples/secret.example.yaml` shows
+its shape, and sits outside `k8s/` so `kubectl apply -f k8s/` cannot overwrite the real value.
+
+`--api-port` fixes the API port. Without it, k3d picks a random one, which fails on Windows if that
+port is in a reserved range (`ports are not available`).
+
+## Screenshots
+
 ![Pipeline green](docs/screenshots/pipeline.png)
+
 ![Pods running](docs/screenshots/pods.png)
--->
+
+## Known limitations
+
+- **Data is not persistent.** Invoices live in each process's memory, so they are lost on restart or
+  redeploy.
+- **Replicas do not share data.** With 2 replicas, an invoice created on one pod returns `404` from the
+  other, and could be paid twice. The fix is a shared database behind `app/store.py`, which would make
+  the pods stateless.
+- **No authentication.** Anyone with the URL can create and pay invoices, which is acceptable only for
+  mock data.
+- **Money uses `float`.** A real payments system should use a decimal type.
+- **The image scan ignores unfixed vulnerabilities.** Trivy fails the build on fixable HIGH and CRITICAL
+  findings only; findings with no available fix are not blocked.
+- **The k3d Deployment is pinned by hand.** Its SHA tag is updated manually, not by the pipeline.
+- **Free tier cold starts.** The Render service sleeps when idle, so the first request can be slow.
 
 ## Related projects
 

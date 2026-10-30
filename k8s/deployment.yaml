@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: payments-api
-          image: ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api:f479671d4a1624f2f647b8f557c89a5a0d94c947
+          image: ghcr.io/emmanuelrukevwe123-lgtm/duplo-style-payments-api:45dcc1f61165f47086bfd1e87d256bb13d38609e
           ports:
             - containerPort: 8000
           envFrom:
