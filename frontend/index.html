@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <title>Ledgerly — Payments control center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/app/" aria-label="Ledgerly home"><span class="brand-mark">L</span><span>ledgerly</span></a>
+        <div class="workspace-switcher"><span class="workspace-dot"></span><span><small>Workspace</small> Acme Finance</span><span class="chevron">⌄</span></div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <p class="nav-label">Workspace</p>
+          <a class="nav-item active" href="#overview"><span class="nav-icon">⌂</span> Overview</a>
+          <a class="nav-item" href="#invoices"><span class="nav-icon">▤</span> Invoices <span class="nav-count" id="nav-invoice-count">0</span></a>
+          <a class="nav-item" href="#transactions"><span class="nav-icon">↗</span> Transactions</a>
+          <p class="nav-label nav-label-spaced">Manage</p>
+          <a class="nav-item" href="#customers"><span class="nav-icon">♧</span> Customers</a>
+          <a class="nav-item" href="#settings"><span class="nav-icon">⚙</span> Settings</a>
+        </nav>
+        <div class="sidebar-bottom"><div class="help-card"><div class="help-icon">?</div><strong>Need a hand?</strong><p>Read the quick-start guide for your workspace.</p><button class="text-button">Open guide <span>→</span></button></div><div class="user-row"><div class="avatar">EC</div><div><strong>Emmanuel C.</strong><small>Admin</small></div><span class="more">•••</span></div></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar"><div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Overview</strong></div><div class="top-actions"><div class="api-status"><span class="status-dot" id="health-dot"></span><span id="health-label">Checking API</span></div><button class="icon-button" aria-label="Notifications">♢<i></i></button><div class="top-avatar">EC</div></div></header>
+        <div class="page-wrap">
+          <section class="hero" id="overview"><div><p class="eyebrow">Thursday, 24 July 2026</p><h1>Good morning, Emmanuel <span>✦</span></h1><p class="hero-subtitle">Here’s what’s happening with your payments today.</p></div><button class="primary-button" id="open-invoice"><span>＋</span> New invoice</button></section>
+
+          <section class="stats-grid" aria-label="Payment summary">
+            <article class="stat-card"><div class="stat-head"><span>Total collected</span><span class="stat-icon green">↗</span></div><strong id="total-collected">₦0</strong><div class="stat-foot"><span class="trend positive">↑ 0%</span><span>vs last month</span></div></article>
+            <article class="stat-card"><div class="stat-head"><span>Outstanding</span><span class="stat-icon orange">◷</span></div><strong id="total-outstanding">₦0</strong><div class="stat-foot"><span class="trend neutral">— 0%</span><span>vs last month</span></div></article>
+            <article class="stat-card"><div class="stat-head"><span>Invoices paid</span><span class="stat-icon violet">✓</span></div><strong id="paid-count">0</strong><div class="stat-foot"><span class="trend positive">↑ 0%</span><span>vs last month</span></div></article>
+            <article class="stat-card"><div class="stat-head"><span>Avg. payment time</span><span class="stat-icon blue">⌁</span></div><strong>2.4 <em>days</em></strong><div class="stat-foot"><span class="trend positive">↓ 12%</span><span>vs last month</span></div></article>
+          </section>
+
+          <section class="content-grid">
+            <article class="panel chart-panel"><div class="panel-heading"><div><h2>Cash flow</h2><p>Payments received over time</p></div><select id="range-select" aria-label="Chart range"><option>Last 30 days</option><option>Last 90 days</option></select></div><div class="chart-legend"><span><i class="legend-dot paid"></i> Collected</span><span><i class="legend-dot pending"></i> Outstanding</span></div><div class="chart"><div class="y-labels"><span>₦400k</span><span>₦300k</span><span>₦200k</span><span>₦100k</span><span>₦0</span></div><div class="chart-area"><div class="grid-lines"><i></i><i></i><i></i><i></i><i></i></div><svg viewBox="0 0 700 220" preserveAspectRatio="none" role="img" aria-label="Cash flow chart"><defs><linearGradient id="fillGreen" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6ed9a1" stop-opacity=".24"/><stop offset="1" stop-color="#6ed9a1" stop-opacity="0"/></linearGradient></defs><path class="area-fill" d="M0,180 C40,172 53,150 90,158 S130,125 170,140 S215,105 255,121 S300,80 340,106 S385,98 425,115 S462,74 505,89 S545,45 585,70 S630,24 700,42 L700,220 L0,220Z"/><path class="line-pending" d="M0,193 C45,185 62,178 100,181 S145,164 180,174 S225,144 260,158 S305,143 350,150 S400,124 440,139 S480,105 520,121 S575,101 610,112 S660,82 700,91"/><path class="line-paid" d="M0,180 C40,172 53,150 90,158 S130,125 170,140 S215,105 255,121 S300,80 340,106 S385,98 425,115 S462,74 505,89 S545,45 585,70 S630,24 700,42"/></svg><div class="x-labels"><span>01 Jul</span><span>08 Jul</span><span>15 Jul</span><span>22 Jul</span><span>30 Jul</span></div></div></div></article>
+            <article class="panel activity-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Your latest payment events</p></div><button class="link-button" id="view-transactions">View all <span>→</span></button></div><div class="activity-list" id="activity-list"><div class="empty-state">No payment activity yet.</div></div></article>
+          </section>
+
+          <section class="panel invoices-panel" id="invoices"><div class="panel-heading invoices-heading"><div><h2>Invoices</h2><p>Manage and track your customer invoices</p></div><div class="table-actions"><div class="search-box"><span>⌕</span><input id="invoice-search" placeholder="Search invoices" /></div><button class="filter-button">☷ Filter</button><button class="primary-button small" id="open-invoice-2">＋ New invoice</button></div></div><div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Due date</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody id="invoice-rows"><tr><td colspan="6" class="empty-table">Loading invoices…</td></tr></tbody></table></div></section>
+          <footer><span>Ledgerly payments control center</span><span>API <code id="footer-version">—</code> · <a href="/docs" target="_blank">Open API docs ↗</a></span></footer>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="invoice-modal" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><div><p class="eyebrow">Create payment request</p><h2 id="modal-title">New invoice</h2></div><button class="close-button" id="close-modal" aria-label="Close">×</button></div><form id="invoice-form"><label>Customer name<input name="customer_name" required maxlength="200" placeholder="e.g. Northstar Labs" /></label><div class="form-row"><label>Amount (NGN)<input name="amount_ngn" type="number" min="1" step="0.01" required placeholder="0.00" /></label><label>Due date<input name="due_date" type="date" required /></label></div><div class="form-error" id="form-error"></div><button class="primary-button submit-button" type="submit">Create invoice <span>→</span></button></form></section></div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="/app/app.js"></script>
+  </body>
+</html>

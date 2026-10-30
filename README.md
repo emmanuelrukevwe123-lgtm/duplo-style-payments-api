@@ -58,6 +58,10 @@ docker compose up --build
 curl localhost:8000/health
 ```
 
+The Ledgerly payments dashboard is available at `http://localhost:8000/app/`. It uses the
+invoice, payment, transaction, and health endpoints directly; API reference remains available
+at `http://localhost:8000/docs`.
+
 Or without Docker:
 
 ```bash

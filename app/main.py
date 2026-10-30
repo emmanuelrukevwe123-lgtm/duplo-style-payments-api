@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config import get_settings
@@ -14,6 +18,12 @@ def create_app() -> FastAPI:
     )
     app.include_router(invoices.router)
     app.include_router(payments.router)
+    frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+    app.mount("/app", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+
+    @app.get("/", include_in_schema=False)
+    def frontend_home() -> RedirectResponse:
+        return RedirectResponse(url="/app/")
 
     @app.get("/health", tags=["ops"])
     def health() -> dict[str, str]:
