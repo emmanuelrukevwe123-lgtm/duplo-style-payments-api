@@ -17,6 +17,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /srv
 COPY app/ app/
+COPY frontend/ frontend/
 
 USER appuser
 EXPOSE 8000
