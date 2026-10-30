@@ -7,7 +7,7 @@ containerised with Docker, shipped through a GitHub Actions CI/CD pipeline to Gi
 Registry and a live [Render](https://render.com) deployment, with Kubernetes manifests for a local
 k3d cluster.
 
-**Live demo:** [dashboard](https://duplo-style-payments-api.onrender.com/app/) · [health](https://duplo-style-payments-api.onrender.com/health) (free tier: the first request after idling can take about a minute)
+**Live demo:** [dashboard](https://duplo-style-payments-api-latest.onrender.com/app/) · [health](https://duplo-style-payments-api-latest.onrender.com/health) (free tier: the first request after idling can take about a minute)
 **API docs:** `/docs` (Swagger UI)
 
 ## Architecture
